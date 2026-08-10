@@ -1,0 +1,82 @@
+{
+  "diagnostic_time": "2026-08-08T03:13:17+08:00",
+  "project": {
+    "name": "擎梦智骨云端训练平台",
+    "id": "p17861257420227fdk4j",
+    "data_center": "China Data Center"
+  },
+  "device": {
+    "device_id": "269a934046f4318631hp6h",
+    "product_id": "0fc7obn925auckvo"
+  },
+  "subscription": {
+    "service_name": "设备北向能力 / Device Northbound Service",
+    "service_code": "DEVICE_NORTHBOUND_SERVICE_V2",
+    "plan": "体验版",
+    "order_total": "¥0.00",
+    "validity": "长期有效",
+    "order_submitted": true,
+    "service_status": "已生效",
+    "service_order_id": "DEVICE_NORTHBOUND_20260808181044",
+    "related_order_id": "FW2608082G9JPC00"
+  },
+  "cloud_project_service_api_authorization": {
+    "device_northbound_service_authorized": true,
+    "ability_id": "1491698597534638113",
+    "authorized_services_count_after": 5,
+    "authorized_services_seen": [
+      "IoT Core连接服务",
+      "授权凭证管理",
+      "设备北向能力",
+      "行业基础服务包",
+      "资源授权服务（IAM）"
+    ]
+  },
+  "requested_api": {
+    "service_name": "设备北向能力 / Device Northbound Service",
+    "method": "GET",
+    "path": "/v1.0/iot-03/devices/{device_id}/capabilities-definition",
+    "query": {
+      "tags": "original"
+    },
+    "api_explorer_interface": "查询设备能力列表"
+  },
+  "api_call": {
+    "attempted": true,
+    "success": true,
+    "blocked_by_platform": false,
+    "platform_dialog_title": "请进行实名认证",
+    "platform_dialog_message": "根据《中华人民共和国网络安全法》及相关法律的规定与监管部门的要求，用户需要提供真实身份信息，否则网络运营者停止对其提供相关服务。请进行实名认证后再使用云开发平台。",
+    "blocked_action_not_taken": "首次调用时未点击“立即认证”；用户完成实名认证后重试成功",
+    "real_request_url_visible": true,
+    "raw_api_response_visible": true,
+    "raw_response_saved_to": "docs/acceptance/tuya_capabilities_original_20260808.json"
+  },
+  "capability_presence": {
+    "action_confidence": true,
+    "device_status": true,
+    "training_completed": true,
+    "training_completed_methods": [
+      "event"
+    ]
+  },
+  "classification": {
+    "result": "A",
+    "reason": "training_completed exists in original capabilities and methods contains event. This proves Event has entered Cloud Development's northbound capability layer. Product Release is not needed for this diagnostic; continue troubleshooting Message Service event conversion / BizCode / rule."
+  },
+  "prohibited_actions_status": {
+    "product_release_clicked": false,
+    "thing_model_modified": false,
+    "message_rule_modified": false,
+    "device_credentials_modified": false,
+    "device_control_api_called": false,
+    "real_name_verification_started": false
+  },
+  "secrets_safety": {
+    "device_secret_recorded": false,
+    "cloud_access_secret_recorded": false,
+    "cookies_or_tokens_recorded": false,
+    "contact_phone_recorded": false,
+    "contact_email_recorded": false
+  }
+}

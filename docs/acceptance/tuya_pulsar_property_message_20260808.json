@@ -1,0 +1,17 @@
+{
+  "bizCode": "devicePropertyMessage",
+  "bizData": {
+    "dataId": "l610…d114",
+    "devId": "269a…hp6h",
+    "productId": "0fc7…ckvo",
+    "properties": [
+      {
+        "code": "action_confidence",
+        "dpId": 101,
+        "time": 1786181953690,
+        "value": 9731
+      }
+    ]
+  },
+  "ts": 1786181953690
+}

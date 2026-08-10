@@ -1,0 +1,64 @@
+{
+  "mock": true,
+  "api": [
+    {
+      "path": "/open-api/v1.0/users",
+      "method": "GET",
+      "res": {
+        "msg": "",
+        "success": true,
+        "result": {
+          "data": [
+            {
+              "create_time": "1637204610430",
+              "roles": [
+                {
+                  "remark": "",
+                  "role_code": "admin",
+                  "role_name": "admin"
+                }
+              ],
+              "user_id": "bay1637204610495BRqG",
+              "user_name": "admin",
+              "user_nick_name": "系统管理员"
+            },
+            {
+              "create_time": "1637741963865",
+              "roles": [
+                {
+                  "remark": "",
+                  "role_code": "test",
+                  "role_name": "test"
+                }
+              ],
+              "user_id": "bay16372041489899VDK",
+              "user_name": "test",
+              "user_nick_name": "管理员"
+            }
+          ]
+        }
+      },
+      "mock": true
+    },
+    {
+      "path": "/open-api/v1.0/users",
+      "method": "DELETE",
+      "res": {
+        "msg": "",
+        "success": true,
+        "data": {}
+      },
+      "mock": true
+    },
+    {
+      "path": "/open-api/v1.0/users",
+      "method": "PUT",
+      "res": {
+        "msg": "",
+        "success": true,
+        "data": {}
+      },
+      "mock": true
+    }
+  ]
+}

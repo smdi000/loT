@@ -1,0 +1,32 @@
+{
+  "type": "micro-apps/v1.1",
+  "appName": "qmzg-training",
+  "supportedPlatform": [
+    "DESKTOP"
+  ],
+  "annotations": {
+    "sdf.cli:microFramework": "REACT_TS",
+    "sdf.feat:colorTheme": true,
+    "sdf.feat:i18n": false
+  },
+  "universalId": "18457c05-fef0-47aa-91a6-d63d6d23c310",
+  "appEngine": "MICRO-FRONTEND",
+  "name": "lang.name",
+  "defaultMenuIcon": {
+    "type": "tuyaIcon",
+    "name": "sat_factory_modeling"
+  },
+  "description": "lang.description",
+  "entries": [
+    {
+      "type": "Menu",
+      "name": "lang.name",
+      "code": "QMZG_TRAINING",
+      "path": "/dashboard"
+    }
+  ],
+  "configs": [],
+  "privileges": [],
+  "apis": [],
+  "dependencies": []
+}

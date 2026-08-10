@@ -1,0 +1,57 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: qmzg
+      POSTGRES_USER: qmzg
+      POSTGRES_PASSWORD: qmzg_local_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qmzg -d qmzg"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    build: .
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://qmzg:qmzg_local_dev@postgres:5432/qmzg
+      TUYA_ACCESS_ID: ${TUYA_ACCESS_ID:-}
+      TUYA_ACCESS_SECRET: ${TUYA_ACCESS_SECRET:-}
+      TUYA_PULSAR_URL: ${TUYA_PULSAR_URL:-}
+      TUYA_PULSAR_TOPIC: ${TUYA_PULSAR_TOPIC:-}
+      TUYA_PULSAR_SUBSCRIPTION: ${TUYA_PULSAR_SUBSCRIPTION:-}
+      JWT_SECRET: ${JWT_SECRET:-}
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: ${JWT_ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  tuya-consumer:
+    build: .
+    command: python -m app.integrations.tuya.consumer
+    environment:
+      DATABASE_URL: postgresql+psycopg://qmzg:qmzg_local_dev@postgres:5432/qmzg
+      TUYA_ACCESS_ID: ${TUYA_ACCESS_ID:-}
+      TUYA_ACCESS_SECRET: ${TUYA_ACCESS_SECRET:-}
+      TUYA_PULSAR_URL: ${TUYA_PULSAR_URL:-}
+      TUYA_PULSAR_TOPIC: ${TUYA_PULSAR_TOPIC:-}
+      TUYA_PULSAR_SUBSCRIPTION: ${TUYA_PULSAR_SUBSCRIPTION:-}
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -1,0 +1,169 @@
+{
+  "diagnostic_time": "2026-08-08T03:15:40+08:00",
+  "request": {
+    "method": "GET",
+    "path": "/v1.0/iot-03/devices/{device_id}/capabilities-definition",
+    "device_id": "269a934046f4318631hp6h",
+    "query": {
+      "tags": "original"
+    },
+    "service": "设备北向能力 / Device Northbound Service",
+    "ability_id": "1491698597534638113",
+    "note": "Only the response body is saved. API Explorer curl headers were not saved because they contained temporary access_token/sign values."
+  },
+  "response": {
+    "result": {
+      "capabilities": [
+        {
+          "capability_code": "action_confidence",
+          "methods": [
+            "get",
+            "event"
+          ],
+          "name": "动作识别置信度",
+          "request": {},
+          "response": {
+            "description": "当前动作识别模型输出的置信度",
+            "max": 10000,
+            "min": 0,
+            "name": "动作识别置信度",
+            "scale": 2,
+            "step": 1,
+            "type": "integer",
+            "unit": "%"
+          },
+          "tags": [
+            "original"
+          ]
+        },
+        {
+          "capability_code": "device_status",
+          "methods": [
+            "get",
+            "event"
+          ],
+          "name": "设备状态",
+          "request": {},
+          "response": {
+            "description": "设备仅主动上报，当前不支持云端控制",
+            "enum": [
+              "idle",
+              "training",
+              "fault"
+            ],
+            "name": "设备状态",
+            "type": "string"
+          },
+          "tags": [
+            "original"
+          ]
+        },
+        {
+          "capability_code": "training_completed",
+          "methods": [
+            "event"
+          ],
+          "name": "训练完成",
+          "request": {},
+          "response": {
+            "properties": {
+              "session_id": {
+                "max_length": 64,
+                "min_length": 0,
+                "name": "训练会话ID",
+                "type": "string"
+              },
+              "duration_sec": {
+                "max": 86400,
+                "min": 0,
+                "name": "训练时长",
+                "scale": 0,
+                "step": 1,
+                "type": "integer",
+                "unit": "s"
+              },
+              "total_reps": {
+                "max": 100000,
+                "min": 0,
+                "name": "总动作数",
+                "scale": 0,
+                "step": 1,
+                "type": "integer",
+                "unit": "次"
+              },
+              "avg_confidence": {
+                "max": 10000,
+                "min": 0,
+                "name": "平均置信度",
+                "scale": 2,
+                "step": 1,
+                "type": "integer",
+                "unit": "%"
+              },
+              "max_elbow_angle": {
+                "max": 1800,
+                "min": 0,
+                "name": "最大肘关节角度",
+                "scale": 1,
+                "step": 1,
+                "type": "integer",
+                "unit": "°"
+              },
+              "max_shoulder_angle": {
+                "max": 1800,
+                "min": 0,
+                "name": "最大肩关节角度",
+                "scale": 1,
+                "step": 1,
+                "type": "integer",
+                "unit": "°"
+              },
+              "summary_json": {
+                "max_length": 255,
+                "min_length": 0,
+                "name": "扩展训练摘要",
+                "type": "string"
+              }
+            },
+            "required": [
+              "session_id",
+              "started_at",
+              "ended_at",
+              "duration_sec",
+              "total_reps",
+              "avg_confidence",
+              "max_elbow_angle",
+              "max_shoulder_angle",
+              "summary_json"
+            ],
+            "type": "json"
+          },
+          "tags": [
+            "original"
+          ]
+        }
+      ],
+      "device_id": "269a934046f4318631hp6h"
+    },
+    "success": true,
+    "t": 1786130140382,
+    "tid": "608b56a6929411f1808a167c6eff359b"
+  },
+  "analysis": {
+    "api_call_success": true,
+    "action_confidence_exists": true,
+    "device_status_exists": true,
+    "training_completed_exists": true,
+    "training_completed_methods": [
+      "event"
+    ],
+    "classification": "A",
+    "classification_reason": "training_completed exists in original capabilities and methods contains event. This proves the Event has entered Cloud Development's northbound capability layer. Do not release Product for this diagnostic; continue troubleshooting Message Service event message conversion / BizCode / rule."
+  },
+  "secrets_safety": {
+    "device_secret_recorded": false,
+    "cloud_access_secret_recorded": false,
+    "cookies_or_tokens_recorded": false,
+    "api_explorer_access_token_or_sign_recorded": false
+  }
+}

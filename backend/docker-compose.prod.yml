@@ -1,0 +1,69 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-qmzg}
+      POSTGRES_USER: ${POSTGRES_USER:-qmzg}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    command:
+      - postgres
+      - -c
+      - shared_buffers=64MB
+      - -c
+      - work_mem=2MB
+      - -c
+      - maintenance_work_mem=32MB
+      - -c
+      - max_connections=30
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-qmzg} -d ${POSTGRES_DB:-qmzg}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 192m
+    restart: unless-stopped
+
+  api:
+    image: qmzg-backend:phase4a
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-qmzg}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-qmzg}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: ${JWT_ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    mem_limit: 192m
+    restart: unless-stopped
+
+  tuya-consumer:
+    image: qmzg-backend:phase4a
+    build: .
+    command: python -m app.integrations.tuya.consumer
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-qmzg}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-qmzg}
+      TUYA_ACCESS_ID: ${TUYA_ACCESS_ID:?TUYA_ACCESS_ID is required}
+      TUYA_ACCESS_SECRET: ${TUYA_ACCESS_SECRET:?TUYA_ACCESS_SECRET is required}
+      TUYA_PULSAR_URL: ${TUYA_PULSAR_URL:?TUYA_PULSAR_URL is required}
+      TUYA_PULSAR_TOPIC: ${TUYA_PULSAR_TOPIC:-TEST}
+      TUYA_PULSAR_SUBSCRIPTION: ${TUYA_PULSAR_SUBSCRIPTION:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    mem_limit: 256m
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

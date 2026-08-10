@@ -1,0 +1,65 @@
+{
+  "name": "qmzg-training",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "cross-env MICRO_THEME=dark QMZG_DATA_MODE=mock micro-script start",
+    "dev:real": "cross-env MICRO_THEME=dark QMZG_DATA_MODE=real micro-script start",
+    "start": "cross-env MICRO_THEME=light micro-script start",
+    "start:dark": "cross-env MICRO_THEME=dark micro-script start",
+    "start:saas": "cross-env MICRO_THEME=dark micro-script start --main --proxy",
+    "build": "micro-script",
+    "lint": "eslint --ext .ts,.tsx src",
+    "test": "jest --runInBand",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tuya-sat/micro-script": "^3.2.11",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@types/react-router-dom": "^5.3.2",
+    "babel-plugin-import": "^1.13.3",
+    "@sentry/types": "^6.18.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^12.1.5",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "16.18.126",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^2.4.1",
+    "ts-jest": "^29.2.5",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@tuya-sat/galaxy": "1.0.2",
+    "antd": "4.19.5",
+    "axios": "^0.24.0",
+    "i18next": "^21.3.3",
+    "i18next-browser-languagedetector": "^6.1.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-i18next": "^11.12.0",
+    "react-router-dom": "^5.3.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

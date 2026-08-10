@@ -1,0 +1,92 @@
+{
+  "diagnostic_time": "2026-08-08T02:59:07+08:00",
+  "project": {
+    "name": "擎梦智骨云端训练平台",
+    "id": "p17861257420227fdk4j",
+    "data_center": "China Data Center"
+  },
+  "device": {
+    "device_id": "269a934046f4318631hp6h",
+    "product_id": "0fc7obn925auckvo"
+  },
+  "requested_api": {
+    "service_name": "设备北向能力 / Device Northbound Service",
+    "method": "GET",
+    "path": "/v1.0/iot-03/devices/{device_id}/capabilities-definition",
+    "query": {
+      "tags": "original"
+    }
+  },
+  "official_doc_evidence": {
+    "tuya_cn_application_dev": "https://developer.tuya.com/cn/docs/iot/application-dev?id=Kbf53a58zz6t1",
+    "northbound_service_subscription_link": "https://www.tuya.com/vas/commodity/DEVICE_NORTHBOUND_SERVICE_V2",
+    "notes": [
+      "Tuya official TuyaLink application development document says to subscribe to the northbound service first, then authorize Device Northbound Service in the Cloud Project Service API page.",
+      "The same document says the read-only capability query endpoint is GET /v1.0/iot-03/devices/{device_id}/capabilities-definition and tags can be standard or original."
+    ]
+  },
+  "cloud_project_service_api_state": {
+    "authorized_services_count": 4,
+    "authorized_services": [
+      "IoT Core连接服务",
+      "授权凭证管理",
+      "行业基础服务包",
+      "资源授权服务（IAM）"
+    ],
+    "device_northbound_service_already_authorized": false,
+    "add_api_authorization_search": {
+      "search_terms": [
+        "设备北向",
+        "Northbound",
+        "能力",
+        "iot-03"
+      ],
+      "device_northbound_service_found": false,
+      "notable_related_results": [
+        "公区通用能力",
+        "门禁开放能力",
+        "网关开放能力",
+        "行业基础服务包"
+      ]
+    }
+  },
+  "subscription_page_state": {
+    "url": "https://www.tuya.com/vas/commodity/DEVICE_NORTHBOUND_SERVICE_V2",
+    "service_title": "设备北向能力",
+    "plan": "体验版",
+    "price_displayed": "¥0.00",
+    "validity": "长期有效"
+  },
+  "order_page_blocker": {
+    "url": "https://www.tuya.com/vas/submitOrder?code=DEVICE_NORTHBOUND_SERVICE_V2&settlementFrom=newBuyNow",
+    "amount_displayed": "¥0.00",
+    "requires_contact_phone": true,
+    "requires_contact_email": true,
+    "requires_agreement_checkbox": "我同意《云开发通用协议》",
+    "requires_auto_acceptance_checkbox": "订单支付并提交后，请您在收到系统服务完成通知后3天内完成确认和验收，3天后未确认则视为您同意授权系统自动完成确认",
+    "submitted": false,
+    "reason_not_submitted": "User explicitly forbids completing flows that require signing/accepting agreements or other irreversible confirmation. The order page requires agreement and auto-acceptance checkboxes, so the flow was stopped before submission."
+  },
+  "capabilities_api": {
+    "api_explorer_service_visible": false,
+    "api_call_attempted": false,
+    "api_call_success": false,
+    "raw_api_response": null,
+    "reason_not_called": "Device Northbound Service was not authorized because the free subscription order page required agreement acceptance. Without service authorization, the API Explorer entry for this service was not available."
+  },
+  "capability_presence": {
+    "action_confidence": "not_checked",
+    "device_status": "not_checked",
+    "training_completed": "not_checked",
+    "training_completed_methods": null
+  },
+  "classification": {
+    "result": "blocked_before_A_B_C_D",
+    "reason": "The required Device Northbound Service could not be authorized under the current instruction boundary. Therefore the original capabilities API could not be called, and A/B/C/D classification cannot be made yet."
+  },
+  "secrets_safety": {
+    "device_secret_recorded": false,
+    "cloud_access_secret_recorded": false,
+    "cookies_or_tokens_recorded": false
+  }
+}

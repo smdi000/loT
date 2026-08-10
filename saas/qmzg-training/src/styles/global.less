@@ -1,0 +1,20 @@
+@entry-name: light;
+@galaxy-theme-entry-name: variable;
+@import './@{entry-name}.less';
+
+:root {
+  --qm-bg: #06131f;
+  --qm-panel: #0b2132;
+  --qm-panel-soft: #0e293d;
+  --qm-line: rgba(133, 172, 205, 0.16);
+  --qm-text: #eaf5ff;
+  --qm-muted: #8fa9bf;
+  --qm-cyan: #22d3e5;
+  --qm-blue: #3388ff;
+  --qm-violet: #806bff;
+  --qm-green: #2ed6a1;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { min-height: 100%; }
+body { color: var(--qm-text); background: var(--qm-bg) !important; }

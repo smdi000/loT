@@ -1,0 +1,22 @@
+{
+  "plugins": [
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "libraryDirectory": "es",
+        "style": true
+      },
+      "antd"
+    ],
+    [
+      "import",
+      {
+        "libraryName": "@tuya-sat/galaxy",
+        "libraryDirectory": "es",
+        "style": true
+      },
+      "@tuya-sat/galaxy"
+    ]
+  ]
+}
