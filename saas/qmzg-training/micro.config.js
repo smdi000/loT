@@ -14,7 +14,11 @@ module.exports = {
   },
   /** @type {WebpackCombineFunction} */
   webpack(config, { isDev }) {
-    config.output.publicPath = isDev ? '/' : './';
+    // Tuya MicroApp releases keep their relative asset path. The standalone
+    // competition build is served from the ECS root and needs absolute assets
+    // so direct refreshes such as /training/:id do not resolve to /training/static.
+    const standalone = process.env.QMZG_STANDALONE === 'true';
+    config.output.publicPath = standalone || isDev ? '/' : './';
     return config;
   },
   // micro-script 3.2 mounts its standalone SPA fallback before the built-in

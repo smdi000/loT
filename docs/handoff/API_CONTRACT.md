@@ -19,6 +19,16 @@
 
 FastAPI errors use `{ "detail": "..." }` (validation errors may be a detail array). 用户只能读取当前绑定设备的训练记录。
 
+## Public Web routing
+
+| Public path | Target |
+|---|---|
+| `/`、`/dashboard`、`/devices`、`/training/...` | Nginx 托管 React，使用 SPA history fallback |
+| `/custom-api/*` | Nginx 移除 `/custom-api/` 前缀后代理到 FastAPI |
+| `/health` | FastAPI health |
+
+Phase 4-C 没有改变任何 FastAPI request/response schema。
+
 ## TrainingSummary — Edge business object
 
 ```json
@@ -61,4 +71,3 @@ FastAPI errors use `{ "detail": "..." }` (validation errors may be a detail arra
 ## TrainingReport response
 
 报告把平均置信度和角度转换为展示数值：`avg_confidence=96.7`、`range_of_motion={elbow_max:128.5, shoulder_max:93.4}`，并返回 `actions`、`fault_count` 与非医疗声明。不得将其描述为诊断或治疗建议。
-

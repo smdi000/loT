@@ -1,6 +1,6 @@
 # Project Inventory
 
-审计日期：2026-08-11。此清单是移动文件前的源码快照分类；Phase 5-A 没有移动或删除原文件。
+审计日期：2026-08-12。此清单记录当前 tracked project assets；Phase 5-A/5-A.6 没有移动或删除原文件。
 
 ## 可维护模块
 
@@ -8,10 +8,17 @@
 |---|---|---|
 | Edge 正式接口 | `edge/` | 新建骨架；纯单元测试；尚未接 Intel 真机 |
 | Business Backend | `backend/` | 已真实部署并通过 ECS 验收 |
-| Tuya MicroApp | `saas/qmzg-training/` | 已发布 0.0.1；Visual Polish 本轮不发布 |
-| ECS 部署辅助 | `deploy/`、`backend/docker-compose.prod.yml` | 已用于 Phase 4-A |
+| Tuya MicroApp / Public Web source | `saas/qmzg-training/` | MicroApp 0.0.1 已发布；Visual Polish 已作为 standalone Public Web 部署，未再次 sdf publish |
+| ECS 部署辅助 | `deploy/`、`backend/docker-compose.prod.yml` | Phase 4-A backend + Phase 4-C Nginx/static web |
 | 系统/交接/验收文档 | `docs/` | 保留完整证据 |
 | 公共 CA | `certs/tuya_go_daddy_root_g2.cer` | 公开信任根，不是私钥 |
+
+## Competition Public Web tracked assets
+
+- `deploy/nginx.conf`：React SPA、`/custom-api` 与 `/health` 的 Nginx routing template。
+- `deploy/deploy_saas_web.sh`：timestamp release、原子 symlink、`nginx -t`、graceful reload、health/root check 与 rollback。
+- `saas/qmzg-training/` 中的 standalone build compatibility：Real Mode 和根路径 static assets；generated `dist/` 不进入 Git。
+- `docs/acceptance/competition_web_deployment_20260812.md`：公网真实 UI、Nginx、API、资源与回滚验收。
 
 ## L610 golden reference（原位保留）
 
@@ -35,4 +42,3 @@
 - Docker volume/state、runtime credentials、SSH 私钥
 
 未发现可以无风险删除的“废弃协议脚本”；因此本阶段不删除任何历史 PoC。历史 handoff 只被 Git 忽略。
-

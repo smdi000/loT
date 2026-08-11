@@ -9,6 +9,7 @@
     "start:dark": "cross-env MICRO_THEME=dark micro-script start",
     "start:saas": "cross-env MICRO_THEME=dark micro-script start --main --proxy",
     "build": "micro-script",
+    "build:web": "cross-env MICRO_THEME=dark QMZG_DATA_MODE=real QMZG_STANDALONE=true micro-script",
     "lint": "eslint --ext .ts,.tsx src",
     "test": "jest --runInBand",
     "typecheck": "tsc --noEmit"

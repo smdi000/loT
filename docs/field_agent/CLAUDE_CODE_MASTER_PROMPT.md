@@ -13,10 +13,11 @@
 ```text
 Developer Workstation --SSH--> Intel Linux Board --USB/UART--> Fibocom L610
 Fibocom L610 --中国电信 4G/TLS/MQTT--> TuyaLink
-Tuya Message Service/Pulsar --> Alibaba ECS Consumer --> PostgreSQL --> FastAPI --> Tuya SaaS
+Tuya Message Service/Pulsar --> Alibaba ECS Consumer --> PostgreSQL --> FastAPI
+FastAPI <-- /custom-api -- ECS Nginx + Public Competition Web
 ```
 
-项目云端已经真实验收：Tuya Property、Pulsar TEST Consumer、PostgreSQL、FastAPI history/detail/report、Alibaba ECS 与 SaaS 均工作。你只负责 **Intel / L610 Edge Integration**；不要重新设计云端。
+项目云端已经真实验收：Tuya Property → Pulsar TEST Consumer → Alibaba ECS → PostgreSQL → FastAPI → Public Competition Web。公网比赛入口是 `http://47.250.160.90/`，真实登录、设备、history/detail/report 与 Presentation Mode 已验收。Tuya MicroApp 0.0.1 是独立平台集成资产，不是现场 Edge 门禁。你只负责 **Intel / L610 Edge Integration**；不要重新设计云端。
 
 硬件已知基线：Fibocom L610-CN-62-36，固件 `16000.1208.00.86.02.02`，115200 baud。Windows 的 `COM21` 只属于旧电脑，Linux `/dev/tty*` 必须现场发现。Broker 是中国区 `m1.tuyacn.com:8883`，IP 禁止写死。
 
@@ -51,7 +52,7 @@ L610 掉电后 `GTSSLVER`、`GTSSLMODE`、`TRUSTFILE` 不持久。每次正式�
 
 默认只读：`backend/`、`saas/`、`deploy/`、`docs/architecture/`。
 
-严格禁止未经用户另行授权修改：根 golden scripts、Tuya Thing Model、Cloud Project、Message Service、ECS production stack、PostgreSQL schema、SaaS UI。
+严格禁止未经用户另行授权修改：根 golden scripts、Tuya Thing Model、Cloud Project、Message Service、ECS production stack、PostgreSQL schema、Public Web/Nginx、SaaS UI、比赛账号或设备 ownership。
 
 ## 执行纪律
 
@@ -80,7 +81,7 @@ Host qmzg-intel
 
 Stage 06 必须先用新的 `action_confidence` 正例，确认 Intel → L610 → Tuya → ECS `devicePropertyMessage`。Stage 07 才允许从 Intel 创建 `acceptance_intel_training_001`。Stage 08 只有 ECS/PostgreSQL/FastAPI/SaaS 可见才是全链通过；设备侧 `code=0` 不够。
 
-Stage 09 是最终硬门禁：Intel 与 L610 完整掉电后，不允许 Windows 参与、不允许人工预跑 TLS restore。正式初始化自动完成 port discovery、AT、SIM、LTE、MIPCALL、TLS restore、MQTT，然后上报 `acceptance_intel_powercycle_001` 并在云端可见。任何电源操作都必须由现场人员执行。
+Stage 09 是最终硬门禁：Intel 与 L610 完整掉电后，不允许 Windows 参与、不允许人工预跑 TLS restore。正式初始化自动完成 port discovery、AT、SIM、LTE、MIPCALL、TLS restore、MQTT，然后上报 `acceptance_intel_powercycle_001`，并在 ECS 与 Public Competition Web 可见。任何电源操作都必须由现场人员执行。
 
 所有手工验收完成前不要 enable systemd。最后服务使用受保护 env file、`Restart=on-failure` 与合理 `RestartSec`，避免快速重启循环，日志使用 journalctl。
 

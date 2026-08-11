@@ -18,6 +18,7 @@
 ## Alibaba Cloud
 
 - [ECS Phase 4-A 全链路](alibaba_cloud_phase4a_20260810.md)
+- [Competition Public Web Deployment](competition_web_deployment_20260812.md) — ECS Nginx + Visual Polish React + `/custom-api` + 真实训练报告
 
 ## Tuya SaaS
 
@@ -28,4 +29,3 @@
 ## Protocol golden references
 
 根目录 L610 脚本与历史本地日志曾完成串口、LTE、TLS、MQTT、Property/Event 真机验收。日志含设备标识和协议证据，已被 Git 忽略；需要审计时仅在授权的私密工作区查阅。
-

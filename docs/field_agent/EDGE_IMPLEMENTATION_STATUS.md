@@ -25,3 +25,7 @@
 | systemd unit | Not created | Field Stage10 | Yes | 所有手工验收后才创建/enable |
 
 没有 Python `raise NotImplementedError` 隐藏在业务路径；缺口表现为 `L610LinkBackend` Protocol 尚无 concrete implementation，CLI明确返回 NOT_READY/非零 exit code。
+
+## Known-good external baseline
+
+当前 Edge 外部依赖链已经真实验收为：Tuya → China TEST Pulsar → Alibaba ECS Consumer → PostgreSQL → FastAPI → Public Competition Web。比赛公网前端和 Nginx 不属于尚未完成的 Intel hardware implementation；Field Agent 只需把 Intel/L610 上报接入这条既有链路，不得重做云端或比赛 Web。

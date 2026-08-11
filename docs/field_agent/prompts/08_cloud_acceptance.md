@@ -2,11 +2,11 @@
 
 ## GOAL
 
-验证 `acceptance_intel_training_001` 从 Intel/L610 一直进入 ECS PostgreSQL、FastAPI history/detail/report 与 SaaS。设备侧 `code=0` 不是完整验收。
+验证 `acceptance_intel_training_001` 从 Intel/L610 一直进入 Pulsar、ECS Consumer、PostgreSQL、FastAPI history/detail/report 与 Public Competition Web。设备侧 `code=0` 不是完整验收。
 
 ## KNOWN GOOD BASELINE
 
-Tuya China TEST Pulsar、ECS Consumer、PostgreSQL revision `20260808_02`、FastAPI/Nginx/SaaS 已验收。Property adapter 将 `training_max_shldr_angle` 映射为业务 `max_shoulder_angle`。生产系统默认只读验证，不修改部署。
+Tuya China TEST Pulsar、ECS Consumer、PostgreSQL revision `20260808_02`、FastAPI、Nginx 与 Public Competition Web 已验收。比赛入口是 `http://47.250.160.90/`。Property adapter 将 `training_max_shldr_angle` 映射为业务 `max_shoulder_angle`。生产系统默认只读验证，不修改部署。
 
 ## ALLOWED CHANGES
 
@@ -14,15 +14,15 @@ Tuya China TEST Pulsar、ECS Consumer、PostgreSQL revision `20260808_02`、Fast
 
 ## FORBIDDEN CHANGES
 
-禁止改 ECS compose、Consumer、database/schema/ownership、Tuya/SaaS、直接 SQL 造记录、记录密码/JWT/Secret。
+禁止改 ECS compose、Consumer、database/schema/ownership、Tuya、Public Web/Nginx/SaaS、创建比赛账号、直接 SQL 造记录、记录密码/JWT/Secret。
 
 ## COMMANDS / INSPECTION
 
-按 msgId/session/DeviceID 时间线只读核对：Tuya ACK/Device Log（如可访问）、Consumer日志脱敏摘要、`tuya_messages`、`training_sessions`、owner/source_type；通过正式登录 API获取临时 JWT，调用 history/detail/report，最后在 SaaS确认。不要把 token输出或保存。
+按 msgId/session/DeviceID 时间线只读核对：Tuya ACK/Device Log（如可访问）、Consumer 日志脱敏摘要、`tuya_messages`、`training_sessions`、owner/source_type；通过正式 API 验证 history/detail/report，最后确认 Public Competition Web 出现新训练记录。Field Agent 不得索要比赛账号密码；需要 UI 登录时，让现场用户本人登录，Agent 只使用已登录浏览器 session 验收。不得输出或保存 token。
 
 ## SUCCESS CRITERIA
 
-`external_session_id=acceptance_intel_training_001`；`source_type=tuya_property`；owner正确；字段与Intel一致；history/detail/report均可见；报告不是医疗诊断；SaaS显示真实数据。
+`external_session_id=acceptance_intel_training_001`；`source_type=tuya_property`；owner正确；字段与 Intel 一致；history/detail/report 均可见；报告不是医疗诊断；Public Competition Web 显示真实数据。
 
 ## STOP CONDITIONS
 
@@ -30,8 +30,8 @@ Tuya China TEST Pulsar、ECS Consumer、PostgreSQL revision `20260808_02`、Fast
 
 ## EVIDENCE TO SAVE
 
-逐层时间/ID关联、脱敏 DB/API/SaaS结果、幂等观察、Failure layer、Git status。
+逐层时间/ID 关联、脱敏 DB/API/Public Web 结果、幂等观察、Failure layer、Git status。
 
 ## FINAL REPORT FORMAT
 
-模板 + 链路矩阵 `Intel | Tuya ACK | Pulsar | tuya_messages | training_sessions | history | detail | report | SaaS`，每项 PASS/FAIL。报告后停止。
+模板 + 链路矩阵 `Intel | Tuya ACK | Pulsar | ECS Consumer | tuya_messages | training_sessions | FastAPI | Public Web | report`，每项 PASS/FAIL。报告后停止。

@@ -14,7 +14,14 @@
 - [ ] MQTT — CONNECT HEX/长度、MIPSEND 长度、CONNACK `20 02 00 00`
 - [ ] Property — 新 `action_confidence`、PUBACK、Tuya code=0、ECS `devicePropertyMessage`
 - [ ] Training Summary — `acceptance_intel_training_001` 完整字段与 ACK
-- [ ] ECS — `tuya_messages`、`training_sessions`、owner/source_type
-- [ ] SaaS/API — history/detail/report 可见且数值一致
+- [ ] Tuya ACK — 本次 Training Summary 的 PUBACK 与业务 `code=0`
+- [ ] Pulsar — TEST channel 收到完整 `devicePropertyMessage`
+- [ ] ECS Consumer — 消息被接收、规范化并处理
+- [ ] PostgreSQL — `tuya_messages`、`training_sessions`、owner/source_type
+- [ ] FastAPI — history/detail/report 可见且数值一致
+- [ ] Public Web — 公网训练历史出现新 session
+- [ ] Training Report — 公网报告字段、动作统计与单位正确
 - [ ] Full Power Cycle — 现场断电确认；自动恢复；`acceptance_intel_powercycle_001`
 - [ ] systemd — 手工链路全部通过后才 enable；状态、journal、重启间隔证据
+
+Tuya MicroApp / Spatial AI / OEM App 属于独立平台集成状态，不是 Intel 比赛现场成功硬门禁。

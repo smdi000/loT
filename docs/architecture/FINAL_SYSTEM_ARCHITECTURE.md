@@ -16,12 +16,15 @@ flowchart LR
     C["Consumer"] --> DB["PostgreSQL"]
     DB --> API["FastAPI"]
   end
-  subgraph UI["PRESENTATION"]
-    SAAS["Tuya MicroApp / SaaS"]
+  subgraph UI["PUBLIC PRESENTATION"]
+    N["ECS Nginx"] --> WEB["React Visual Polish Web"]
+    MICRO["Tuya MicroApp 0.0.1\nplatform integration asset"]
   end
   L --> TL
   MS --> C
-  SAAS -->|"/custom-api · JWT"| API
+  WEB -->|"/custom-api · JWT"| N
+  N -->|"127.0.0.1:8000"| API
+  MICRO -.->|"same stable API contract"| API
 ```
 
 ## Responsibilities
@@ -31,7 +34,7 @@ flowchart LR
 | Edge | 高频 IMU、AI inference、reps/angles/confidence/actions/faults、Session 汇总 | 用户账号、历史数据库、展示 |
 | L610 / Tuya Device Cloud | 蜂窝链路、设备身份、TLS/MQTT、Thing Model、消息转发 | 高频计算、业务用户 |
 | Business Cloud | Pulsar 消费、原始消息、幂等、设备归属、训练历史、报告 API | DeviceSecret、前端视觉 |
-| Presentation | 登录、Dashboard、设备、历史、报告、比赛展示 | 直接访问 PostgreSQL/Tuya Secret |
+| Public Presentation | ECS Nginx、React Visual Polish Web、登录、Dashboard、设备、历史、报告、比赛展示 | 直接访问 PostgreSQL/Tuya Secret |
 
 ## Data rate boundary
 
@@ -42,5 +45,9 @@ flowchart LR
 - Tuya DeviceID / DeviceSecret：设备云身份，仅 Edge/Tuya 边界使用。
 - Business user / JWT：FastAPI 业务身份。
 - `user_devices`：两种身份的受控映射。
-- SaaS 永远不持有 Tuya Access Secret、DeviceSecret 或数据库凭证。
+- Public Web 与 Tuya MicroApp 永远不持有 Tuya Access Secret、DeviceSecret 或数据库凭证。
 
+## Presentation deployment status
+
+- 比赛主展示入口：Alibaba ECS 上的 Public Competition Web，Nginx 托管静态 React，`/custom-api/*` 同源代理 FastAPI，`/health` 保留后端健康检查。
+- Tuya MicroApp 是独立平台集成资产：0.0.1 已发布并存在 `competition-demo` 标签；Spatial AI Solution 仍受 OEM App gate 阻塞，不是比赛成功硬门禁。

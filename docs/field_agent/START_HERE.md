@@ -12,6 +12,8 @@ Tuya → Pulsar → Alibaba ECS → PostgreSQL → FastAPI → SaaS
 
 只负责 Intel / L610 Edge Integration。云端、后端与 SaaS 已真实验收，不重新设计。一次只过一个门禁：审计 → 当前 Stage → 保存证据 → 报告 → 停止。
 
+Public Competition Web 已部署在 Alibaba ECS；现场 Edge Agent 不负责维护 Web frontend 或 Nginx。
+
 ## 目录边界
 
 - 可改：`edge/`、`docs/acceptance/phase5b*`、必要的 Edge requirements/config/systemd 文件。

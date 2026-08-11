@@ -3,14 +3,14 @@
 **Edge AI + Cellular IoT + Cloud SaaS**  
 Upper-limb intelligent training exoskeleton
 
-擎梦智骨在 Intel 边缘端完成高频传感与动作推理，通过 Fibocom L610 的独立 4G 链路把一次训练的低频摘要上报至 TuyaLink，再由阿里云业务后端持久化并呈现在 Tuya SaaS MicroApp。高频 IMU/推理数据不会逐帧上传云端。
+擎梦智骨在 Intel 边缘端完成高频传感与动作推理，通过 Fibocom L610 的独立 4G 链路把一次训练的低频摘要上报至 TuyaLink，再由阿里云业务后端持久化并呈现在 Public Competition Web。Tuya MicroApp 作为独立平台集成资产保留。高频 IMU/推理数据不会逐帧上传云端。
 
 ## Architecture
 
 ```text
 STM32 / Sensors → Intel Edge AI → L610 4G → TuyaLink
                                               ↓ Pulsar
-Tuya MicroApp ← HTTPS / FastAPI ← PostgreSQL ← Consumer
+Public React Web ← Nginx / FastAPI ← PostgreSQL ← Consumer
 ```
 
 - `edge/`：面向下一轮 Intel Linux 集成的业务接口与纯单元测试。
@@ -43,6 +43,8 @@ python -m pytest -q
 ## Demo
 
 Mock Mode 使用明确的 `DEMO-DEVICE-001` / `demo_session_001`，展示 623 秒、57 次、96.70%、128.5°/93.4°及动作分布。Real Mode 仍统一通过 `/custom-api/...` 访问 FastAPI。
+
+比赛部署：Alibaba Cloud ECS Public Competition Web；凭证由团队负责人线下保管，不进入仓库。
 
 ## Documentation
 
