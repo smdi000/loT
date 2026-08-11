@@ -49,9 +49,9 @@ Mock Mode 使用明确的 `DEMO-DEVICE-001` / `demo_session_001`，展示 623 �
 - [最终系统架构](docs/architecture/FINAL_SYSTEM_ARCHITECTURE.md)
 - [UI 队友交接](docs/handoff/TEAMMATE_UI_HANDOFF.md)
 - [Intel/Edge 交接](docs/handoff/EDGE_INTEL_HANDOFF.md)
+- [Intel Field Agent — START HERE](docs/field_agent/START_HERE.md)
 - [稳定 API Contract](docs/handoff/API_CONTRACT.md)
 - [Intel 迁移检查表](docs/handoff/INTEL_MIGRATION_CHECKLIST.md)
 - [真实验收索引](docs/acceptance/README.md)
 
 此仓库不会包含 `.env`、私钥、日志、虚拟环境、`node_modules`、构建产物或历史私密 handoff 包。
-
