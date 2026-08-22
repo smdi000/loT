@@ -14,6 +14,7 @@
 - [Pulsar → PostgreSQL → FastAPI](business_backend_postgres_20260808.md)
 - [Auth、设备归属、训练 API](business_backend_phase2_20260808.md)
 - [真实 Training Summary → Report](business_backend_phase3_real_training_20260808.md)
+- [Training Modes + Competition Demo History](training_modes_demo_history_20260822.md) — nullable canonical training type、14 条可识别 mock provenance 的比赛演示历史与公网验收
 
 ## Alibaba Cloud
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import logging
 from datetime import UTC, datetime
 from typing import Any, Literal
 
@@ -12,7 +13,10 @@ from app.integrations.tuya.parser import NormalizedTuyaMessage
 from app.models import Device, TrainingSession, UserDevice
 
 TrainingSource = Literal["tuya_property", "tuya_event", "mock"]
+TrainingType = Literal["passive_assist", "resistance", "active_assist"]
 _ALLOWED_SOURCES = {"tuya_property", "tuya_event", "mock"}
+_ALLOWED_TRAINING_TYPES = {"passive_assist", "resistance", "active_assist"}
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -30,6 +34,7 @@ class NormalizedTrainingSummary:
     max_shoulder_angle: int
     summary_json: dict[str, Any]
     source_type: TrainingSource
+    training_type: TrainingType | None = None
     tuya_msg_id: str | None = None
 
 
@@ -71,6 +76,7 @@ def training_summary_from_tuya_message(message: NormalizedTuyaMessage) -> Normal
             max_shoulder_angle=_int_value(params.get("max_shoulder_angle")),
             summary_json=summary,
             source_type="tuya_event",
+            training_type=training_type_from_summary(summary),
             tuya_msg_id=message.tuya_msg_id,
         )
     except (TypeError, ValueError):
@@ -131,6 +137,7 @@ def training_summary_from_property_message(
             max_shoulder_angle=_int_value(values["training_max_shldr_angle"]),
             summary_json=summary,
             source_type="tuya_property",
+            training_type=training_type_from_summary(summary),
             tuya_msg_id=message.tuya_msg_id,
         )
     except (TypeError, ValueError):
@@ -157,6 +164,20 @@ def _int_value(value: Any) -> int:
     return int(value)
 
 
+def training_type_from_summary(summary: dict[str, Any]) -> TrainingType | None:
+    """Return the canonical session mode without making it ingestion-critical."""
+
+    value = summary.get("training_type", summary.get("training_mode"))
+    if value is None:
+        return None
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in _ALLOWED_TRAINING_TYPES:
+            return normalized  # type: ignore[return-value]
+    logger.warning("Unsupported training type ignored: %r", value)
+    return None
+
+
 def _validate(summary: NormalizedTrainingSummary) -> None:
     if not summary.external_session_id.strip() or len(summary.external_session_id) > 128:
         raise ValueError("external_session_id is required and must be at most 128 characters")
@@ -164,6 +185,8 @@ def _validate(summary: NormalizedTrainingSummary) -> None:
         raise ValueError("device_id is required")
     if summary.source_type not in _ALLOWED_SOURCES:
         raise ValueError("unsupported training source")
+    if summary.training_type is not None and summary.training_type not in _ALLOWED_TRAINING_TYPES:
+        raise ValueError("unsupported training type")
     limits = {
         "duration_sec": (summary.duration_sec, 0, 86_400),
         "total_reps": (summary.total_reps, 0, 100_000),
@@ -219,6 +242,7 @@ def create_training_session(session: Session, summary: NormalizedTrainingSummary
         max_elbow_angle=summary.max_elbow_angle,
         max_shoulder_angle=summary.max_shoulder_angle,
         summary_json=summary.summary_json,
+        training_type=summary.training_type,
         source_type=summary.source_type,
         tuya_msg_id=summary.tuya_msg_id,
     )

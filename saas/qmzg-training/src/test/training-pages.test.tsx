@@ -16,6 +16,7 @@ test('training history renders an accepted real session', async () => {
   render(<MemoryRouter><TrainingHistoryPage /></MemoryRouter>);
   expect(await screen.findByText('57 次')).toBeInTheDocument();
   expect(screen.getByText('96.70%')).toBeInTheDocument();
+  expect(screen.getByText('主动助力训练')).toBeInTheDocument();
   expect(screen.getByTitle('acceptance_cloud_training_001')).toBeInTheDocument();
   expect(screen.getByText('查看报告 →')).toBeInTheDocument();
 });
@@ -56,4 +57,25 @@ test('training report renders the real acceptance values and non-medical notice'
   expect(screen.getByText('0')).toBeInTheDocument();
   expect(screen.getByText(/不构成医疗诊断或治疗建议/)).toBeInTheDocument();
   expect(screen.queryByText(/正常参考范围/)).not.toBeInTheDocument();
+  expect(screen.getAllByText('主动助力训练').length).toBeGreaterThan(0);
+  expect(screen.queryByText('演示数据')).not.toBeInTheDocument();
+});
+
+test('training report marks mock provenance without changing its training type', async () => {
+  mocked.getTrainingSession.mockResolvedValue({ ...testSession, source_type: 'mock', training_type: 'resistance' });
+  mocked.getTrainingReport.mockResolvedValue({ ...testReport, training_type: 'resistance' });
+  render(
+    <MemoryRouter initialEntries={['/training/session-1']}>
+      <Route path="/training/:id"><TrainingReportPage /></Route>
+    </MemoryRouter>
+  );
+  expect((await screen.findAllByText('演示数据')).length).toBeGreaterThan(0);
+  expect(screen.getAllByText('抗阻训练').length).toBeGreaterThan(0);
+});
+
+test('training history uses a neutral marker for a historical null training type', async () => {
+  mocked.getTrainingSessions.mockResolvedValue({ items: [{ ...testSession, training_type: null }], page: 1, page_size: 10, total: 1 });
+  mocked.getDevices.mockResolvedValue([testDevice]);
+  render(<MemoryRouter><TrainingHistoryPage /></MemoryRouter>);
+  expect(await screen.findByText('--')).toBeInTheDocument();
 });

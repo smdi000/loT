@@ -2,7 +2,7 @@ import { summarizeSessions } from '../utils/dashboard';
 import { testSession } from './fixtures';
 
 test('dashboard data transform computes real session aggregates', () => {
-  const older = { ...testSession, id: 'older', total_reps: 10, duration_sec: 60, created_at: '2026-08-09T00:00:00Z' };
+  const older = { ...testSession, id: 'older', total_reps: 10, duration_sec: 60, started_at: '2026-08-09T00:00:00Z', created_at: '2026-08-22T00:00:00Z' };
   const summary = summarizeSessions([older, testSession]);
   expect(summary.trainingCount).toBe(2);
   expect(summary.totalReps).toBe(67);

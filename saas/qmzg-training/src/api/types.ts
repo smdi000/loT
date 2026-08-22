@@ -32,6 +32,7 @@ export interface TrainingSession {
   max_elbow_angle: number | null;
   max_shoulder_angle: number | null;
   summary_json: Record<string, unknown> | null;
+  training_type: TrainingType | null;
   source_type: 'tuya_property' | 'tuya_event' | 'mock';
   tuya_msg_id: string | null;
   created_at: string;
@@ -49,6 +50,8 @@ export interface TrainingAction {
   count: number;
 }
 
+export type TrainingType = 'passive_assist' | 'resistance' | 'active_assist';
+
 export interface TrainingReport {
   id: string;
   device_id: string;
@@ -60,6 +63,7 @@ export interface TrainingReport {
   actions: TrainingAction[];
   device_status: string | null;
   fault_count: number | null;
+  training_type: TrainingType | null;
   summary_json: Record<string, unknown>;
   notice: string;
 }

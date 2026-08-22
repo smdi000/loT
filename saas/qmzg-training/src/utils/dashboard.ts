@@ -10,7 +10,9 @@ export interface DashboardSummary {
 
 export function summarizeSessions(sessions: TrainingSession[]): DashboardSummary {
   const ordered = [...sessions].sort(
-    (left, right) => new Date(right.created_at).getTime() - new Date(left.created_at).getTime()
+    (left, right) =>
+      new Date(right.started_at || right.created_at).getTime() -
+      new Date(left.started_at || left.created_at).getTime()
   );
   return {
     trainingCount: ordered.length,

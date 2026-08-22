@@ -36,9 +36,11 @@ const mockSession: TrainingSession = {
   max_elbow_angle: 1285,
   max_shoulder_angle: 934,
   summary_json: {
+    training_type: 'active_assist',
     actions: { curl: 20, raise: 15, lateral: 12, boxing: 10 },
     fault_count: 0,
   },
+  training_type: 'active_assist',
   source_type: 'mock',
   tuya_msg_id: null,
   created_at: '2026-08-11T08:10:25Z',
@@ -107,6 +109,7 @@ export const mockDataProvider = {
       ],
       device_status: null,
       fault_count: 0,
+      training_type: mockSession.training_type,
       summary_json: { ...(mockSession.summary_json || {}) },
       notice: '训练数据分析仅用于运动训练信息展示，不构成医疗诊断或治疗建议。',
     };
@@ -116,4 +119,3 @@ export const mockDataProvider = {
     deviceBound = true;
   },
 };
-

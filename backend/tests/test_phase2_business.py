@@ -9,7 +9,7 @@ from app.db.session import get_session
 from app.integrations.tuya.parser import normalize_tuya_message
 from app.main import app
 from app.models import Device, TrainingSession
-from app.services.training import NormalizedTrainingSummary, create_training_session, training_summary_from_tuya_message
+from app.services.training import NormalizedTrainingSummary, TrainingType, create_training_session, training_summary_from_tuya_message
 
 
 @pytest.fixture
@@ -50,6 +50,7 @@ def summary(
     external_session_id: str = "acceptance_session_001",
     tuya_msg_id: str | None = "tuya-training-001",
     extras: dict | None = None,
+    training_type: TrainingType | None = None,
 ) -> NormalizedTrainingSummary:
     started_at = datetime(2026, 8, 8, 10, 0, tzinfo=UTC)
     payload = {
@@ -71,6 +72,7 @@ def summary(
         max_shoulder_angle=1148,
         summary_json=payload,
         source_type="mock",
+        training_type=training_type,
         tuya_msg_id=tuya_msg_id,
     )
 
@@ -103,8 +105,8 @@ def test_training_session_auto_assigns_owner_is_idempotent_and_reports(client: T
     token = register_and_login(client, "trainer@example.test")
     assert client.post("/api/devices/bind", json={"device_id": "device-training-01"}, headers=headers(token)).status_code == 201
 
-    first = create_training_session(session, summary("device-training-01", extras={"future_metric": {"score": 5}}))
-    repeated = create_training_session(session, summary("device-training-01"))
+    first = create_training_session(session, summary("device-training-01", extras={"future_metric": {"score": 5}}, training_type="active_assist"))
+    repeated = create_training_session(session, summary("device-training-01", training_type="active_assist"))
     assert first.created is True
     assert repeated.created is False
     assert session.query(TrainingSession).count() == 1
@@ -113,9 +115,11 @@ def test_training_session_auto_assigns_owner_is_idempotent_and_reports(client: T
     history = client.get("/api/training-sessions?page=1&page_size=10", headers=headers(token))
     assert history.status_code == 200
     assert history.json()["total"] == 1
+    assert history.json()["items"][0]["training_type"] == "active_assist"
     session_id = history.json()["items"][0]["id"]
     detail = client.get(f"/api/training-sessions/{session_id}", headers=headers(token))
     assert detail.status_code == 200
+    assert detail.json()["training_type"] == "active_assist"
     report = client.get(f"/api/training-sessions/{session_id}/report", headers=headers(token))
     assert report.status_code == 200
     body = report.json()
@@ -123,6 +127,7 @@ def test_training_session_auto_assigns_owner_is_idempotent_and_reports(client: T
     assert body["total_reps"] == 57
     assert body["avg_confidence"] == 96.7
     assert body["range_of_motion"] == {"elbow_max": 128.4, "shoulder_max": 114.8}
+    assert body["training_type"] == "active_assist"
     assert body["summary_json"]["future_metric"] == {"score": 5}
     assert "not a medical diagnosis" in body["notice"]
 
@@ -180,4 +185,5 @@ def test_tuya_event_adapter_produces_a_business_summary_without_raw_json_parsing
     assert adapted.external_session_id == "acceptance_session_001"
     assert adapted.device_id == "device-adapter-01"
     assert adapted.summary_json["future_metric"] == "kept"
+    assert adapted.training_type is None
     assert adapted.source_type == "tuya_event"

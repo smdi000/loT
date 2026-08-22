@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getDevices, getTrainingSessions } from '../api/services';
 import { Device, TrainingSession, TrainingSessionPage } from '../api/types';
 import AsyncState from '../components/AsyncState';
+import TrainingTypeBadge from '../components/TrainingTypeBadge';
 import { formatConfidence, formatDate, formatDuration, maskDeviceId } from '../utils/format';
 
 const emptyPage: TrainingSessionPage = { items: [], page: 1, page_size: 10, total: 0 };
@@ -36,6 +37,7 @@ export default function TrainingHistoryPage() {
   const columns: ColumnsType<TrainingSession> = [
     { title: '训练时间', dataIndex: 'started_at', render: (value, row) => <div className="time-cell"><strong>{formatDate(value)}</strong><span>训练完成</span><code title={row.external_session_id}>{softenSessionId(row.external_session_id)}</code></div> },
     { title: '训练时长', dataIndex: 'duration_sec', render: value => formatDuration(value) },
+    { title: '训练类型', dataIndex: 'training_type', render: value => <TrainingTypeBadge value={value} /> },
     { title: '动作次数', dataIndex: 'total_reps', render: value => `${value || 0} 次` },
     { title: '平均置信度', dataIndex: 'avg_confidence', render: value => <Tag color="cyan">{formatConfidence(value)}</Tag> },
     { title: '设备', dataIndex: 'device_id', render: value => maskDeviceId(value) },

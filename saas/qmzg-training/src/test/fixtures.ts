@@ -29,6 +29,7 @@ export const testSession: TrainingSession = {
   max_elbow_angle: 1285,
   max_shoulder_angle: 934,
   summary_json: { actions: { curl: 20, raise: 15, lateral: 12, boxing: 10 }, fault_count: 0 },
+  training_type: 'active_assist',
   source_type: 'tuya_property',
   tuya_msg_id: 'message-1',
   created_at: '2026-08-10T08:10:25Z',
@@ -50,6 +51,7 @@ export const testReport: TrainingReport = {
   ],
   device_status: 'normal',
   fault_count: 0,
+  training_type: 'active_assist',
   summary_json: testSession.summary_json || {},
   notice: '仅用于运动训练数据总结',
 };

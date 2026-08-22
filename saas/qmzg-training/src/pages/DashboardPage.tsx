@@ -5,6 +5,7 @@ import { getAllTrainingSessions, getDevices } from '../api/services';
 import { Device, TrainingAction, TrainingSession } from '../api/types';
 import ActionDistribution from '../components/ActionDistribution';
 import AsyncState from '../components/AsyncState';
+import TrainingTypeBadge from '../components/TrainingTypeBadge';
 import { summarizeSessions } from '../utils/dashboard';
 import { formatConfidence, formatDate, formatDuration, maskDeviceId } from '../utils/format';
 
@@ -94,7 +95,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <div className="latest-training-copy">
-                  <div className="session-meta"><span>{formatDate(latest.started_at)}</span><code>{latest.external_session_id}</code></div>
+                  <div className="session-meta"><span>{formatDate(latest.started_at)}</span><TrainingTypeBadge value={latest.training_type} /><code>{latest.external_session_id}</code></div>
                   <div className="latest-metrics">
                     <div><strong>{formatClock(latest.duration_sec)}</strong><span>训练时长</span></div>
                     <div><strong>{latest.total_reps ?? '--'}</strong><span>动作次数</span></div>
@@ -145,6 +146,7 @@ export default function DashboardPage() {
                 {summary.recent.map(item => (
                   <Link className="recent-session-row" to={`/training/${item.id}`} key={item.id}>
                     <time>{formatDate(item.started_at)}</time>
+                    <TrainingTypeBadge value={item.training_type} />
                     <span><strong>{formatDuration(item.duration_sec)}</strong><small>训练时长</small></span>
                     <span><strong>{item.total_reps ?? '--'} 次</strong><small>动作次数</small></span>
                     <span><strong>{formatConfidence(item.avg_confidence)}</strong><small>平均置信度</small></span>

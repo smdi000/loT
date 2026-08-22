@@ -168,7 +168,9 @@ def list_training_sessions(
     total = session.scalar(select(func.count()).select_from(statement.subquery())) or 0
     items = list(
         session.scalars(
-            statement.order_by(TrainingSession.created_at.desc()).offset((page - 1) * page_size).limit(page_size)
+            statement.order_by(TrainingSession.started_at.desc(), TrainingSession.created_at.desc())
+            .offset((page - 1) * page_size)
+            .limit(page_size)
         )
     )
     return TrainingSessionPage(items=items, page=page, page_size=page_size, total=total)
@@ -220,6 +222,7 @@ def get_training_report(
         actions=_actions(summary),
         device_status=device_status,
         fault_count=fault_count,
+        training_type=record.training_type,
         summary_json=summary,
         notice="Training performance summary only; it is not a medical diagnosis or treatment recommendation.",
     )

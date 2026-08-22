@@ -88,6 +88,7 @@ class TrainingSessionRead(BaseModel):
     max_elbow_angle: int | None
     max_shoulder_angle: int | None
     summary_json: Any
+    training_type: str | None
     source_type: str
     tuya_msg_id: str | None
     created_at: datetime
@@ -111,5 +112,6 @@ class TrainingReport(BaseModel):
     actions: list[dict[str, Any]]
     device_status: str | None
     fault_count: int | None
+    training_type: str | None
     summary_json: Any
     notice: str

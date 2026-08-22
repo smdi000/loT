@@ -18,7 +18,7 @@ Stage 06 property正例已过。`TrainingSummary` 稳定字段：session_id、aw
 
 ## COMMANDS / INSPECTION
 
-在 Intel 程序构造 timezone-aware、时间差与 duration 一致的 `TrainingSummary(session_id="acceptance_intel_training_001", ...)`，调用 `TuyaEdgeClient.report_training_summary(summary)` 一次。发送前自检 9 个 Property、紧凑 summary JSON ≤255 UTF-8 bytes、MQTT/MIPSEND长度。等待完整 MQTT与Tuya ACK；记录 Device Log/Pulsar 是否一条消息包含完整字段，不预先引入 staging/Redis。
+在 Intel 程序构造 timezone-aware、时间差与 duration 一致的 `TrainingSummary(session_id="acceptance_intel_training_001", ...)`，调用 `TuyaEdgeClient.report_training_summary(summary)` 一次。如果真实训练模式已知，在现有 compact summary JSON 中加入 `"training_type":"passive_assist"`、`"resistance"` 或 `"active_assist"`；模式尚未接入时允许省略/null，不作为本阶段硬阻塞。发送前自检 9 个 Property、紧凑 summary JSON ≤255 UTF-8 bytes、MQTT/MIPSEND长度。等待完整 MQTT与Tuya ACK；记录 Device Log/Pulsar 是否一条消息包含完整字段，不预先引入 staging/Redis。
 
 ## SUCCESS CRITERIA
 

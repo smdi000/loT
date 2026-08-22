@@ -96,6 +96,7 @@ class TrainingSession(Base):
     max_elbow_angle: Mapped[int | None] = mapped_column(Integer, nullable=True)
     max_shoulder_angle: Mapped[int | None] = mapped_column(Integer, nullable=True)
     summary_json: Mapped[JsonValue] = mapped_column(json_type, nullable=False, default=dict)
+    training_type: Mapped[str | None] = mapped_column(String(32), nullable=True)
     source_type: Mapped[str] = mapped_column(String(64), nullable=False)
     tuya_msg_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

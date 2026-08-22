@@ -32,6 +32,7 @@ test('Dashboard displays the latest training-session average confidence', async 
   expect(screen.getByText('L610 · 4G')).toBeInTheDocument();
   expect(screen.getByText('Tuya IoT Cloud')).toBeInTheDocument();
   expect(screen.getByText('Alibaba Cloud')).toBeInTheDocument();
+  expect(screen.getAllByText('主动助力训练').length).toBeGreaterThan(0);
   expect(screen.queryByText('12.34%')).not.toBeInTheDocument();
   expect(mocked.getAllTrainingSessions).toHaveBeenCalledTimes(1);
 });

@@ -6,6 +6,7 @@ import { TrainingReport, TrainingSession } from '../api/types';
 import ActionDistribution from '../components/ActionDistribution';
 import AsyncState from '../components/AsyncState';
 import JointAngleVisual from '../components/JointAngleVisual';
+import TrainingTypeBadge from '../components/TrainingTypeBadge';
 import { formatDate, formatDuration, maskDeviceId } from '../utils/format';
 
 function softenSessionId(value: string) {
@@ -47,7 +48,7 @@ export default function TrainingReportPage() {
           <>
             <section className="report-hero">
               <div className="report-hero-copy">
-                <Tag color="cyan">TRAINING COMPLETE</Tag>
+                <div className="report-tags"><Tag color="cyan">TRAINING COMPLETE</Tag><TrainingTypeBadge value={session.training_type} />{session.source_type === 'mock' && <span className="demo-data-badge">演示数据</span>}</div>
                 <h2>{formatDate(session.started_at)}</h2>
                 <p><span>{maskDeviceId(session.device_id)}</span><code title={session.external_session_id}>{softenSessionId(session.external_session_id)}</code></p>
               </div>
@@ -85,9 +86,10 @@ export default function TrainingReportPage() {
               <div className="card-title"><div><span className="eyebrow">TRAINING SUMMARY</span><h2>训练摘要</h2></div></div>
               <div className="summary-grid">
                 <div><span>训练时长</span><strong>{formatDuration(report.duration_sec)}</strong></div>
+                <div><span>训练类型</span><strong>{report.training_type ? <TrainingTypeBadge value={report.training_type} /> : '--'}</strong></div>
                 <div><span>动作类型</span><strong>{report.actions.length} 类</strong></div>
                 <div><span>设备异常数量</span><strong>{report.fault_count ?? 0}</strong></div>
-                <div><span>数据来源</span><strong>Tuya Property</strong></div>
+                <div><span>数据来源</span><strong>{session.source_type === 'mock' ? '演示数据' : session.source_type === 'tuya_event' ? 'Tuya Event' : 'Tuya Property'}</strong></div>
               </div>
               <div className="report-notice">训练数据分析仅用于运动训练信息展示，不构成医疗诊断或治疗建议。</div>
             </Card>

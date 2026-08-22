@@ -29,7 +29,7 @@ def complete_property_summary(*, message_id: str = "property-summary-001") -> di
                 {"code": "training_max_shldr_angle", "value": 934},
                 {
                     "code": "training_summary_json",
-                    "value": '{"actions":{"curl":20,"raise":15,"lateral":12,"boxing":10},"fault_count":0}',
+                    "value": '{"training_type":"active_assist","actions":{"curl":20,"raise":15,"lateral":12,"boxing":10},"fault_count":0}',
                 },
                 {"code": "future_property", "value": "kept in raw message only"},
             ],
@@ -46,6 +46,7 @@ def test_complete_property_summary_normalizes_at_the_tuya_boundary() -> None:
     assert summary.max_elbow_angle == 1285
     assert summary.max_shoulder_angle == 934
     assert summary.summary_json["actions"]["boxing"] == 10
+    assert summary.training_type == "active_assist"
     assert summary.source_type == "tuya_property"
 
 
@@ -86,6 +87,7 @@ def test_property_summary_creates_owner_assigned_session_and_is_idempotent(sessi
     assert record.avg_confidence == 9670
     assert record.max_shoulder_angle == 934
     assert record.source_type == "tuya_property"
+    assert record.training_type == "active_assist"
     assert session.scalar(select(func.count()).select_from(TrainingSession)) == 1
     assert session.scalar(select(func.count()).select_from(TuyaMessage)) == 1
 

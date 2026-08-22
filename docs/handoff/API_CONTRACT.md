@@ -41,6 +41,7 @@ Phase 4-C 没有改变任何 FastAPI request/response schema。
   "avg_confidence": 9670,
   "max_elbow_angle": 1285,
   "max_shoulder_angle": 934,
+  "training_type": "active_assist",
   "actions": {"curl": 20, "raise": 15, "lateral": 12, "boxing": 10},
   "fault_count": 0
 }
@@ -60,14 +61,16 @@ Phase 4-C 没有改变任何 FastAPI request/response schema。
 | avg_confidence | `training_avg_confidence` |
 | max_elbow_angle | `training_max_elbow_angle` |
 | max_shoulder_angle | `training_max_shldr_angle` |
-| actions + fault_count | `training_summary_json` compact JSON |
+| actions + fault_count + optional training_type | `training_summary_json` compact JSON |
 
 `shldr` 仅存在于 Tuya 25 字符限制的边界，业务对象、数据库和 API 始终使用 `max_shoulder_angle`。
 
 ## TrainingSession response
 
-`avg_confidence` 与角度在 session API 中仍是缩放整数；`summary_json` 保留 actions/fault_count；`source_type` 是 `tuya_property | tuya_event | mock`。
+`avg_confidence` 与角度在 session API 中仍是缩放整数；`summary_json` 保留 actions/fault_count。`training_type` 是 `passive_assist | resistance | active_assist | null`，未知或历史记录缺失时为 `null`；`source_type` 是 `tuya_property | tuya_event | mock`。
+
+真实 Edge Training Summary 不新增 Tuya Property，而是在现有 compact `training_summary_json` 中传递可选的 `training_type`。兼容输入键 `training_mode`，业务层始终输出 canonical `training_type`；未知值被忽略为 `null`，不会导致整条训练丢失。
 
 ## TrainingReport response
 
-报告把平均置信度和角度转换为展示数值：`avg_confidence=96.7`、`range_of_motion={elbow_max:128.5, shoulder_max:93.4}`，并返回 `actions`、`fault_count` 与非医疗声明。不得将其描述为诊断或治疗建议。
+报告把平均置信度和角度转换为展示数值：`avg_confidence=96.7`、`range_of_motion={elbow_max:128.5, shoulder_max:93.4}`，并返回 `training_type`、`actions`、`fault_count` 与非医疗声明。不得将其描述为诊断或治疗建议。
